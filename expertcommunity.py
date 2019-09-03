@@ -9,8 +9,7 @@ def reward_function(self, x, y, distance_from_center, car_orientation, progress,
     # Reward when yaw (car_orientation) is pointed to the next waypoint IN FRONT.
 
     # Find next nearest waypoint coordinates
-    wp_coord = [waypoints[closest_waypoints+1]
-                [0], waypoints[closest_waypoints+1][1]]
+    wp_coord = [waypoints[closest_waypoints+1][0], waypoints[closest_waypoints+1][1]]
 
     # Calculate the hypotenuse of the triangle - i.e. the radius of the circle drawn from current location to next
     radius = math.hypot(x - wp_coord[0], y - wp_coord[1])
@@ -20,8 +19,7 @@ def reward_function(self, x, y, distance_from_center, car_orientation, progress,
     next_coord[1] = y + (radius * math.sin(car_orientation))
 
     # Calculate the delta of where we are going from the next way point
-    coord_delta = math.hypot(
-        next_coord[0] - wp_coord[0], current_path[1] - wp_coord[1])
+    coord_delta = math.hypot(next_coord[0] - wp_coord[0], current_path[1] - wp_coord[1])
 
     # Max delta should be the radius * 2 - i.e. we're facing 180 in the wrong direction
     # Min distance means we are aimed to the next waypoint exactly
