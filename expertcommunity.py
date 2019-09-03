@@ -4,7 +4,7 @@ def reward_function(self, x, y, distance_from_center, car_orientation, progress,
     reward = 1e-3
 
     wp_coord = [0, 0]
-    angle = [0, 0]
+    next_coord = [0, 0]
 
     # Reward when yaw (car_orientation) is pointed to the next waypoint IN FRONT.
 
