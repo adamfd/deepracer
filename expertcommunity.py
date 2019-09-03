@@ -62,8 +62,8 @@ def reward_function(params):
     req_headingr = math.atan2(x - wp_coord[0], y - wp_coord[1])
     req_heading = math.degrees(req_headingr)
 
-    #if the heading is >5 degrees move towards the racing line.
-    #if the heading is <5 degrees stay central
+    #if the heading is 1-5 degrees reward move towards the outside of the track
+    #if the heading is >15 reward moving to cut in to the corner
 
     if wp_coord[0] > x and wp_coord[1] > y:
         #car is turning left
@@ -72,12 +72,12 @@ def reward_function(params):
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
-                        reward = reward * 1.5
+                        reward *= 1.5 
             else:
                 #deeper in a corner take the side of the corner
                 if abs(req_heading) >15:
                     if center_variance > 0.8:
-                        reward = reward * 1.5                
+                        reward *= 1.5                
     elif wp_coord[0] > x and wp_coord[1] < y:    
         #car is turning right
         if abs(req_heading) > 5:
@@ -85,12 +85,12 @@ def reward_function(params):
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
-                        reward = reward * 1.5
+                        reward *= 1.5
             else:
                 #deeper in a corner take the side of the corner
                 if abs(req_heading) >15:
                     if center_variance > 0.8:
-                        reward = reward * 1.5   
+                        reward *= 1.5   
     elif wp_coord[0] < x and wp_coord[1] < y:
         #car is turning left
         if abs(req_heading) > 5:
@@ -98,12 +98,12 @@ def reward_function(params):
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
-                        reward = reward * 1.5
+                        reward *= 1.5 
             else:
                 #deeper in a corner take the side of the corner
                 if abs(req_heading) >15:
                     if center_variance > 0.8:
-                        reward = reward * 1.5   
+                        reward *= 1.5    
     elif wp_coord[0] <x and wp_coord[1] > y:
         #car is turning right
         if abs(req_heading) > 5:
@@ -111,12 +111,12 @@ def reward_function(params):
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
-                        reward = reward * 1.5
+                        reward *= 1.5 
             else:
                 #deeper in a corner take the side of the corner
                 if abs(req_heading) >15:
                     if center_variance > 0.8:
-                        reward = reward * 1.5   
+                        reward *= 1.5   
 
     # Steering penality threshold, change the number based on your action space setting
     ABS_STEERING_THRESHOLD = 30
@@ -129,7 +129,7 @@ def reward_function(params):
     # speed is in m/s
     # the below assumes your action space has a maximum speed of 5 m/s and speed granularity of 3
     # we penalize as a ratio of how much slower than the threshold
-    SPEED_THRESHOLD = 4.5
+    SPEED_THRESHOLD = 3.5
     if speed < SPEED_THRESHOLD:
         reward *= (speed / SPEED_THRESHOLD)
 
