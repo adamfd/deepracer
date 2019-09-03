@@ -34,7 +34,7 @@ def reward_function(params):
         next_coord[0] = x + (radius * math.cos(car_orientation_off_axis))
         next_coord[1] = y + (radius * math.sin(car_orientation_off_axis))
     elif heading >=-90 and heading <0:
-        car_orientation_off_axis = 
+        car_orientation_off_axis = heading
         next_coord[0] = x + (radius * math.cos(car_orientation_off_axis))
         next_coord[1] = y + (radius * math.sin(car_orientation_off_axis))
     elsif heading <-90:
@@ -54,8 +54,46 @@ def reward_function(params):
         # up to change of 0 if facing the wrong way
         reward += 10 * (1 - (coord_delta / (radius * 2)))
 
-    # Increase reward when the next way point is going in to the corner on the racing line
+    # Increase reward when the next way point is going in to the corner on the racing line    
+    #Based on next waypoint, is car turning left or right
     center_variance = distance_from_center / track_width
+
+    #required heading
+    req_headingr = math.atan2(x - wp_coord[0], y - wp_coord[1])
+    req_heading = math.degrees(req_headingr)
+
+    #if the heading is >5 degrees move towards the racing line.
+    #if the heading is <5 degrees stay central
+
+    if wp_coord[0] > x and wp_coord[1] > y:
+        #car is turning left
+        if abs(req_heading) > 5:
+            if is_left_of_center = True:
+                if abs(req_heading) > 5 and abs(req_heading) < 10:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5
+    elif wp_coord[0] > x and wp_coord[1] < y:    
+        #car is turning right
+        if abs(req_heading) > 5:
+            if is_left_of_center = False:
+                if abs(req_heading) > 5 and abs(req_heading) < 10:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5
+    elif wp_coored[0] < x and wp_coord[1] < y:
+        #car is turning left
+        if abs(req_heading) > 5:
+            if is_left_of_center = True:
+                if abs(req_heading) > 5 and abs(req_heading) < 10:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5
+    elif wp_coored[0] <x and wp_coord[1] > y:
+        #car is turning right
+        if abs(req_heading) > 5:
+            if is_left_of_center = False:
+                if abs(req_heading) > 5 and abs(req_heading) < 10:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5
+
     
 
 
