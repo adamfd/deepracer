@@ -91,7 +91,7 @@ def reward_function(params):
                 if abs(req_heading) >15:
                     if center_variance > 0.8:
                         reward = reward * 1.5   
-    elif wp_coored[0] < x and wp_coord[1] < y:
+    elif wp_coord[0] < x and wp_coord[1] < y:
         #car is turning left
         if abs(req_heading) > 5:
             if is_left_of_center = False:
@@ -104,7 +104,7 @@ def reward_function(params):
                 if abs(req_heading) >15:
                     if center_variance > 0.8:
                         reward = reward * 1.5   
-    elif wp_coored[0] <x and wp_coord[1] > y:
+    elif wp_coord[0] <x and wp_coord[1] > y:
         #car is turning right
         if abs(req_heading) > 5:
             if is_left_of_center = True:
