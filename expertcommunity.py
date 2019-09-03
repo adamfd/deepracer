@@ -68,34 +68,55 @@ def reward_function(params):
     if wp_coord[0] > x and wp_coord[1] > y:
         #car is turning left
         if abs(req_heading) > 5:
-            if is_left_of_center = True:
-                if abs(req_heading) > 5 and abs(req_heading) < 10:
+            if is_left_of_center = False:
+                #near the start of a corner, enter from the far side of the rack
+                if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
                         reward = reward * 1.5
+            else:
+                #deeper in a corner take the side of the corner
+                if abs(req_heading) >15:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5                
     elif wp_coord[0] > x and wp_coord[1] < y:    
         #car is turning right
         if abs(req_heading) > 5:
-            if is_left_of_center = False:
-                if abs(req_heading) > 5 and abs(req_heading) < 10:
+            if is_left_of_center = True:
+                #near the start of a corner, enter from the far side of the rack
+                if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
                         reward = reward * 1.5
+            else:
+                #deeper in a corner take the side of the corner
+                if abs(req_heading) >15:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5   
     elif wp_coored[0] < x and wp_coord[1] < y:
         #car is turning left
         if abs(req_heading) > 5:
-            if is_left_of_center = True:
-                if abs(req_heading) > 5 and abs(req_heading) < 10:
+            if is_left_of_center = False:
+                #near the start of a corner, enter from the far side of the rack
+                if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
                         reward = reward * 1.5
+            else:
+                #deeper in a corner take the side of the corner
+                if abs(req_heading) >15:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5   
     elif wp_coored[0] <x and wp_coord[1] > y:
         #car is turning right
         if abs(req_heading) > 5:
-            if is_left_of_center = False:
-                if abs(req_heading) > 5 and abs(req_heading) < 10:
+            if is_left_of_center = True:
+                #near the start of a corner, enter from the far side of the rack
+                if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
                         reward = reward * 1.5
-
-    
-
+            else:
+                #deeper in a corner take the side of the corner
+                if abs(req_heading) >15:
+                    if center_variance > 0.8:
+                        reward = reward * 1.5   
 
     # Steering penality threshold, change the number based on your action space setting
     ABS_STEERING_THRESHOLD = 30
