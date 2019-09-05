@@ -4,13 +4,17 @@ def reward_function(params):
     y = params['y']
     distance_from_center = params['distance_from_center']
     heading = params['heading']
-    steering = params['steering']
+    steering_angle = params['steering_angle']
     track_width = params['track_width']
     waypoints = params['waypoints']
     closest_waypoints = params['closest_waypoints']
     all_wheels_on_track = params['all_wheels_on_track']
     is_left_of_center = params['is_left_of_center']
+    speed = params['speed']
+    
 
+    import math
+    
     reward = 1e-3
 
     wp_coord = [0, 0]
@@ -19,7 +23,7 @@ def reward_function(params):
     # Reward when car is pointed to the next waypoint
 
     # Find next nearest waypoint coordinates
-    wp_coord = [waypoints[closest_waypoints+1][0], waypoints[closest_waypoints+1][1]]
+    wp_coord = [(waypoints[closest_waypoints[1]])[0], (waypoints[closest_waypoints[1]])[1]]
 
     # Calculate the hypotenuse of the triangle - i.e. the radius of the circle drawn from current location to next
     radius = math.hypot(x - wp_coord[0], y - wp_coord[1])
@@ -29,15 +33,15 @@ def reward_function(params):
         car_orientation_off_axis = heading
         next_coord[0] = x + (radius * math.cos(car_orientation_off_axis))
         next_coord[1] = y + (radius * math.sin(car_orientation_off_axis))
-    elif heading >90 
-        car_orientation_off_axis =  = 180 - heading
+    elif heading > 90:
+        car_orientation_off_axis = 180 - heading
         next_coord[0] = x + (radius * math.cos(car_orientation_off_axis))
         next_coord[1] = y + (radius * math.sin(car_orientation_off_axis))
-    elif heading >=-90 and heading <0:
+    elif heading >= -90 and heading < 0:
         car_orientation_off_axis = heading
         next_coord[0] = x + (radius * math.cos(car_orientation_off_axis))
         next_coord[1] = y + (radius * math.sin(car_orientation_off_axis))
-    elsif heading <-90:
+    elif heading < -90:
         car_orientation_off_axis = -(180 + heading)
         next_coord[0] = x + (radius * math.cos(car_orientation_off_axis))
         next_coord[1] = y + (radius * math.sin(car_orientation_off_axis))
@@ -68,7 +72,7 @@ def reward_function(params):
     if wp_coord[0] > x and wp_coord[1] > y:
         #car is turning left
         if abs(req_heading) > 5:
-            if is_left_of_center = False:
+            if is_left_of_center == False:
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
@@ -81,7 +85,7 @@ def reward_function(params):
     elif wp_coord[0] > x and wp_coord[1] < y:    
         #car is turning right
         if abs(req_heading) > 5:
-            if is_left_of_center = True:
+            if is_left_of_center == True:
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
@@ -94,7 +98,7 @@ def reward_function(params):
     elif wp_coord[0] < x and wp_coord[1] < y:
         #car is turning left
         if abs(req_heading) > 5:
-            if is_left_of_center = False:
+            if is_left_of_center == False:
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
@@ -107,7 +111,7 @@ def reward_function(params):
     elif wp_coord[0] <x and wp_coord[1] > y:
         #car is turning right
         if abs(req_heading) > 5:
-            if is_left_of_center = True:
+            if is_left_of_center == True:
                 #near the start of a corner, enter from the far side of the rack
                 if abs(req_heading) > 1 and abs(req_heading) < 5:
                     if center_variance > 0.8:
@@ -119,10 +123,10 @@ def reward_function(params):
                         reward *= 1.5   
 
     # Steering penality threshold, change the number based on your action space setting
-    ABS_STEERING_THRESHOLD = 30
+    ABS_STEERING_THRESHOLD = 25
 
     # Penalize reward if the car is steering too much - additional re-enforcement for being too far off
-    if steering > ABS_STEERING_THRESHOLD:
+    if steering_angle > ABS_STEERING_THRESHOLD:
         reward *= 0.5
 
     # penalize reward for the car taking slow actions
