@@ -68,6 +68,10 @@ def reward_function(params):
 
     #if the heading is 1-5 degrees reward move towards the outside of the track
     #if the heading is >15 reward moving to cut in to the corner
+    
+
+    ### make reward more granular - it goes out too quickly in the corner - need to have a more gradual move from inside the corner to outside...
+    ### the reward diff can be too small between great and bad progress sometimes I think as well...
 
     if wp_coord[0] > x and wp_coord[1] > y:
         #car is turning left
