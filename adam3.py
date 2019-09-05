@@ -68,9 +68,6 @@ def reward_function(params):
 
     #if the heading is 1-5 degrees reward move towards the outside of the track
     #if the heading is >15 reward moving to cut in to the corner
-    
-
-    #Reward for a gentle bend being on the outisde, moving inside as it tightens.
     #Where no bend reward being on the centre
 
     if wp_coord[0] > x and wp_coord[1] > y:
@@ -156,14 +153,14 @@ def reward_function(params):
             if abs(req_heading) > 1 and abs(req_heading) < 5:
                 if center_variance > 0.8:
                     reward *= 0.8
-                    
+
     #check if only x or y coord changes - hence going in a straight line
     elif wp_coord[0] = x or wp_coord[1] = y:
     #car is on a straight line
                 if center_variance == 0:
                     reward *= 1.5 #reward being on the centreline
                 elif centre_variance > 0.2
-                    reward *= 0.7 #punish being too far off centre
+                    reward *= 0.5 #punish being too far off centre
 
     # Steering penality threshold, change the number based on your action space setting
     ABS_STEERING_THRESHOLD = 25
