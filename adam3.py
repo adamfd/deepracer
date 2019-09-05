@@ -155,11 +155,11 @@ def reward_function(params):
                     reward *= 0.8
 
     #check if only x or y coord changes - hence going in a straight line
-    elif wp_coord[0] = x or wp_coord[1] = y:
+    elif wp_coord[0] == x or wp_coord[1] == y:
     #car is on a straight line
                 if center_variance == 0:
                     reward *= 1.5 #reward being on the centreline
-                elif centre_variance > 0.2
+                elif centre_variance > 0.2:
                     reward *= 0.5 #punish being too far off centre
 
     # Steering penality threshold, change the number based on your action space setting
@@ -177,4 +177,8 @@ def reward_function(params):
     if speed < SPEED_THRESHOLD:
         reward *= (speed / SPEED_THRESHOLD)
 
+    if not all_wheels_on_track:
+        # Penalize if the car goes off track
+        reward = 1e-3
+        
     return reward
