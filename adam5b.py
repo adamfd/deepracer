@@ -75,20 +75,20 @@ def reward_function(params):
         if is_left_of_center == False:
             #near the start of a corner, reward being on the outside for racing line
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5 
                 else:
                     reward *= 1.0   #no change if on the correct side of the rack
         else:
             #deeper in a corner take the side of the corner
             if abs(req_heading) >15:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5          
                 else:
                     reward *= 1.0   #no change if on the right side of the rack     
             #punish being on the inside of the corner when a gentle curve
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 0.8
 
     elif wp_coord[0] > x and wp_coord[1] < y:    
@@ -96,20 +96,20 @@ def reward_function(params):
         if is_left_of_center == True:
             #near the start of a corner, reward being on the outside for racing line
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5
                 else:
                     reward *=1.0    #no change if on the correct side of the rack
         else:
             #deeper in a corner take the inside 
             if abs(req_heading) >15:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5   
                 else:
                     reward *=1.0    #no change if on the correct side of the rack                    
             #punish being on the inside of the corner when a gentle curve
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 0.8
 
     elif wp_coord[0] < x and wp_coord[1] < y:
@@ -117,20 +117,20 @@ def reward_function(params):
         if is_left_of_center == False:
             #near the start of a corner, reward being on the outside for racing line
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5 
                 else:
                     reward *=1.0    #no change if on the correct side of the rack
         else:
             #deeper in a corner take the out side of the corner
             if abs(req_heading) >15:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5    
                 else:
                     reward *=1.0    #no change if on the correct side of the rack
             #punish being on the inside of the corner when a gentle curve
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 0.8
 
     elif wp_coord[0] <x and wp_coord[1] > y:
@@ -138,20 +138,20 @@ def reward_function(params):
         if is_left_of_center == True:
             #near the start of a corner, reward being on the outside for racing line
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5 
                 else:
                     reward *=1.0     #no change if on the correct side of the rack
         else:
             #deeper in a corner take the side of the corner
             if abs(req_heading) >15:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 1.5   
                 else:
                     reward *=1.0     #no change if on the correct side of the rack
             #punish being on thze outside of the corner when a gentle curve
             if abs(req_heading) > 1 and abs(req_heading) < 5:
-                if center_variance > 0.8:
+                if center_variance > 0.7:
                     reward *= 0.8
 
     #check if only x or y coord changes - hence going in a straight line
@@ -182,8 +182,12 @@ def reward_function(params):
     elif speed <= 4 and abs(steering_angle) == 30:
         reward *= 2
 
-  #  if not all_wheels_on_track:
-  #      # Penalize if the car goes off track
-  #      reward *=  0.8
+    if all_wheels_on_track:
+        # Reward for staying on the track
+        reward *=  1.1
         
-    return reward   
+    if center_variance > 1.0:
+        # Penalize for being too far off centre
+        reward = 1e-3
+        
+    return reward
